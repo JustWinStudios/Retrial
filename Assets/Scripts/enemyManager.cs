@@ -1,4 +1,5 @@
 using UnityEngine;
+using System; // Needed for the Action delegate
 
 public class enemyManager : MonoBehaviour
 {
@@ -10,10 +11,14 @@ public class enemyManager : MonoBehaviour
     public float moveSpeed = 2f;
     private Transform player;
 
+    // Event to signal enemy death
+    public event Action OnEnemyDeath;
+
     void Start()
     {
         currentHealth = maxHealth;
-        player = GameObject.FindGameObjectWithTag("Player").transform; // Find the player by tag, ensure your player GameObject is tagged as "Player"
+        // Find the player by tag, ensure your player GameObject is tagged as "Player"
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void Update()
@@ -33,7 +38,8 @@ public class enemyManager : MonoBehaviour
             transform.Translate(direction * moveSpeed * Time.deltaTime);
         }
         else
-        {   // Log an error if the player object was not found (helpful for debugging)
+        {
+            // Log an error if the player object was not found (helpful for debugging)
             Debug.LogError("Player object not found!");
         }
     }
@@ -43,7 +49,10 @@ public class enemyManager : MonoBehaviour
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
-            Destroy(gameObject); // Destroy the enemy if health is depleted
+            // Trigger the OnEnemyDeath event before destroying the enemy
+            OnEnemyDeath?.Invoke();
+            // Destroy the enemy if health is depleted
+            Destroy(gameObject);
         }
     }
 }
