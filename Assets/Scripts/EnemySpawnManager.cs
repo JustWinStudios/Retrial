@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemySpawnManager : MonoBehaviour
@@ -13,7 +14,7 @@ public class EnemySpawnManager : MonoBehaviour
     void Start()
     {
         enemiesPerWave = initialEnemiesPerWave;
-        StartWave();
+        StartCoroutine(StartWave());
     }
 
     void Update()
@@ -21,15 +22,18 @@ public class EnemySpawnManager : MonoBehaviour
         // Check if all enemies are defeated to start the next wave
         if (activeEnemies <= 0)
         {
-            StartWave();
+            StartCoroutine(StartWave()); // Use StartCoroutine to call the StartWave coroutine
         }
     }
 
-    void StartWave()
+    IEnumerator StartWave() // Changed to a coroutine to handle time delays
     {
         for (int i = 0; i < enemiesPerWave; i++)
         {
             SpawnEnemyAtRandomPoint();
+            activeEnemies++; // Increment active enemy count
+            // Wait for a random interval between spawns
+            yield return new WaitForSeconds(Random.Range(0.5f, 2f)); // Random delay between 0.5 to 2 seconds
         }
 
         enemiesPerWave += Random.Range(2, 6);
@@ -45,7 +49,6 @@ public class EnemySpawnManager : MonoBehaviour
         Vector2 spawnPoint = playerPosition + randomDirection * (cameraSize + spawnOffset);
 
         GameObject enemy = Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);
-        activeEnemies++; // Increment active enemy count
         enemy.GetComponent<enemyManager>().OnEnemyDeath += HandleEnemyDeath; // Subscribe to the enemy's death event
     }
 
