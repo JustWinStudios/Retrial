@@ -10,7 +10,11 @@ public class enemyManager : MonoBehaviour
     // Movement-related properties
     public float moveSpeed = 2f;
     private Transform player;
-    private Rigidbody2D rb; // Reference to the Rigidbody2D component
+
+    // Attack properties
+    public float attackCooldown = 2.0f; // Cooldown duration between attacks, adjustable from the Inspector
+    public float damageValue = 10f; // Damage inflicted upon the player, adjustable from the Inspector
+    private float lastAttackTime; // Timestamp of the last attack
 
     // Event to signal enemy death
     public event Action OnEnemyDeath;
@@ -18,11 +22,11 @@ public class enemyManager : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        player = GameObject.FindGameObjectWithTag("Player").transform; // Find the player
-        rb = GetComponent<Rigidbody2D>(); // Get the Rigidbody2D component
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        lastAttackTime = Time.time - attackCooldown; // Ensure the enemy can attack immediately on the first contact
     }
 
-    void FixedUpdate() // Use FixedUpdate for physics-based updates
+    void Update()
     {
         MoveTowardsPlayer();
     }
@@ -32,12 +36,24 @@ public class enemyManager : MonoBehaviour
         if (player != null)
         {
             Vector2 direction = (player.position - transform.position).normalized;
-            // Use Rigidbody2D to move the enemy towards the player
-            rb.velocity = direction * moveSpeed;
+            transform.Translate(direction * moveSpeed * Time.deltaTime);
         }
         else
         {
             Debug.LogError("Player object not found!");
+        }
+    }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && Time.time >= lastAttackTime + attackCooldown)
+        {
+            playerManager player = collision.gameObject.GetComponent<playerManager>();
+            if (player != null)
+            {
+                player.TakeDamage(damageValue); // Use the damageValue variable for the damage amount
+                lastAttackTime = Time.time; // Update the last attack time
+            }
         }
     }
 
@@ -46,8 +62,8 @@ public class enemyManager : MonoBehaviour
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
-            OnEnemyDeath?.Invoke(); // Trigger the OnEnemyDeath event
-            Destroy(gameObject); // Destroy the enemy
+            OnEnemyDeath?.Invoke();
+            Destroy(gameObject);
         }
     }
 }
