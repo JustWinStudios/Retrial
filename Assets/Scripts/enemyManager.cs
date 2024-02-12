@@ -51,7 +51,7 @@ public class enemyManager : MonoBehaviour
             playerManager player = collision.gameObject.GetComponent<playerManager>();
             if (player != null)
             {
-                player.TakeDamage(damageValue); // Use the damageValue variable for the damage amount
+                player.TakeDamage((int)damageValue); // Use the damageValue variable for the damage amount
                 lastAttackTime = Time.time; // Update the last attack time
             }
         }

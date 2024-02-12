@@ -1,5 +1,6 @@
 using UnityEngine;
-using UnityEngine.UI; // Required for UI elements like the health bar
+using UnityEngine.UI;
+using System.Collections;
 
 public class playerManager : MonoBehaviour
 {
@@ -14,13 +15,17 @@ public class playerManager : MonoBehaviour
     // Health properties
     public int maxHealth = 100;
     private int currentHealth;
-    public Slider healthBar; // Assign a UI Slider in the Inspector for the health bar
+    [SerializeField] private Slider healthBar; // Now visible in the Inspector due to SerializeField
+    [SerializeField] private CanvasGroup healthBarCanvasGroup; // Now visible in the Inspector due to SerializeField
+    private bool isHealthBarVisible = false;
+    private Coroutine fadeCoroutine;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
         UpdateHealthUI();
+        healthBarCanvasGroup.alpha = 0; // Initially hide the health bar
     }
 
     void Update()
@@ -49,7 +54,6 @@ public class playerManager : MonoBehaviour
         }
     }
 
-    // Method to update the health UI
     void UpdateHealthUI()
     {
         if (healthBar != null) // Check if the health bar slider is assigned
@@ -58,15 +62,52 @@ public class playerManager : MonoBehaviour
         }
     }
 
-    // Method for the player to take damage
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
         UpdateHealthUI();
+
         if (currentHealth <= 0)
         {
-            // Player defeat logic here, such as triggering a game over screen
+            // Player defeat logic here
             Debug.Log("Player defeated");
+        }
+
+        // Show health bar when taking damage
+        if (!isHealthBarVisible)
+        {
+            isHealthBarVisible = true;
+            if (fadeCoroutine != null)
+            {
+                StopCoroutine(fadeCoroutine); // Stop the ongoing fade coroutine if any
+            }
+            fadeCoroutine = StartCoroutine(FadeHealthBar(1, 0.5f)); // Fade in quickly
+        }
+    }
+
+    IEnumerator FadeHealthBar(float targetAlpha, float duration)
+    {
+        float startAlpha = healthBarCanvasGroup.alpha;
+        float time = 0;
+
+        while (time < duration)
+        {
+            healthBarCanvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, time / duration);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        healthBarCanvasGroup.alpha = targetAlpha; // Ensure the target alpha is set
+
+        if (targetAlpha == 1)
+        {
+            // Wait for a moment before starting to fade out
+            yield return new WaitForSeconds(2); // Adjust the wait time as needed
+            fadeCoroutine = StartCoroutine(FadeHealthBar(0, 1.5f)); // Fade out slowly
+        }
+        else
+        {
+            isHealthBarVisible = false;
         }
     }
 }
