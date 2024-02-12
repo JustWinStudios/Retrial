@@ -10,6 +10,7 @@ public class enemyManager : MonoBehaviour
     // Movement-related properties
     public float moveSpeed = 2f;
     private Transform player;
+    private Rigidbody2D rb; // Reference to the Rigidbody2D component
 
     // Event to signal enemy death
     public event Action OnEnemyDeath;
@@ -17,29 +18,25 @@ public class enemyManager : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        // Find the player by tag, ensure your player GameObject is tagged as "Player"
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameObject.FindGameObjectWithTag("Player").transform; // Find the player
+        rb = GetComponent<Rigidbody2D>(); // Get the Rigidbody2D component
     }
 
-    void Update()
+    void FixedUpdate() // Use FixedUpdate for physics-based updates
     {
         MoveTowardsPlayer();
     }
 
     void MoveTowardsPlayer()
     {
-        // Ensure the player object is found
         if (player != null)
         {
-            // Calculate direction based on player's current position
             Vector2 direction = (player.position - transform.position).normalized;
-
-            // Move the enemy towards the player
-            transform.Translate(direction * moveSpeed * Time.deltaTime);
+            // Use Rigidbody2D to move the enemy towards the player
+            rb.velocity = direction * moveSpeed;
         }
         else
         {
-            // Log an error if the player object was not found (helpful for debugging)
             Debug.LogError("Player object not found!");
         }
     }
@@ -49,10 +46,8 @@ public class enemyManager : MonoBehaviour
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
-            // Trigger the OnEnemyDeath event before destroying the enemy
-            OnEnemyDeath?.Invoke();
-            // Destroy the enemy if health is depleted
-            Destroy(gameObject);
+            OnEnemyDeath?.Invoke(); // Trigger the OnEnemyDeath event
+            Destroy(gameObject); // Destroy the enemy
         }
     }
 }
