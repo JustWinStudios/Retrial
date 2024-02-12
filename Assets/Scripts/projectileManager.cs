@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class ProjectileManager : MonoBehaviour
+public class projectileManager : MonoBehaviour
 {
     public float lifespan = 10f; // Time after which the projectile will be destroyed
     public int damage = 10; // Damage dealt by the projectile
+    private bool hasDealtDamage = false; // Flag to ensure damage is only dealt once
 
     private Vector2 startPosition;
 
@@ -23,14 +24,16 @@ public class ProjectileManager : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy")) // Ensure your enemy GameObject has the tag "Enemy"
+        if (!hasDealtDamage && collision.gameObject.CompareTag("Enemy")) // Ensure your enemy GameObject has the tag "Enemy"
         {
-            EnemyHealth enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
-            if (enemyHealth != null)
+            enemyManager enemy = collision.gameObject.GetComponent<enemyManager>(); // Reference to enemyManager
+            if (enemy != null)
             {
-                enemyHealth.TakeDamage(damage);
+                enemy.TakeDamage(damage);
+                hasDealtDamage = true; // Prevents further damage application
             }
-            Destroy(gameObject); // Destroy the projectile upon hitting an enemy
+            Destroy(gameObject); // Destroy the projectile after dealing damage
         }
     }
+
 }

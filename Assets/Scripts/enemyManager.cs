@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour
+public class enemyManager : MonoBehaviour
 {
     // Health-related properties
     public int maxHealth = 100;
-    private int currentHealth;
+    public int currentHealth;
 
     // Movement-related properties
     public float moveSpeed = 2f;
@@ -44,19 +44,6 @@ public class EnemyManager : MonoBehaviour
         if (currentHealth <= 0)
         {
             Destroy(gameObject); // Destroy the enemy if health is depleted
-        }
-    }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        // Example of detecting collision with a projectile
-        if (collision.gameObject.CompareTag("Projectile")) // Make sure your projectile GameObjects are tagged appropriately
-        {
-            ProjectileManager projectile = collision.gameObject.GetComponent<ProjectileManager>();
-            if (projectile != null)
-            {
-                TakeDamage(projectile.damage);
-            }
         }
     }
 }

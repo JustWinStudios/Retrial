@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 1588166221833424824}
   - component: {fileID: 7209583364769207510}
   - component: {fileID: 1119818738242597235}
-  - component: {fileID: -216742317123353873}
+  - component: {fileID: 4537353155165791325}
   m_Layer: 0
   m_Name: Projectile
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,7 +134,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &-216742317123353873
+--- !u!114 &4537353155165791325
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -146,3 +146,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2db0fcdb10a73d408289a4833639303, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lifespan: 10
+  damage: 10
