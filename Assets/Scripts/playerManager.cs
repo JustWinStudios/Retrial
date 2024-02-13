@@ -15,8 +15,9 @@ public class playerManager : MonoBehaviour
     // Health properties
     public int maxHealth = 100;
     private int currentHealth;
-    [SerializeField] private Slider healthBar; // Now visible in the Inspector due to SerializeField
-    [SerializeField] private CanvasGroup healthBarCanvasGroup; // Now visible in the Inspector due to SerializeField
+    public Slider healthBar; // Assign a UI Slider in the Inspector for the health bar
+    public Image healthFillImage; // Assign the Fill Image of the health bar slider
+    public CanvasGroup healthBarCanvasGroup; // Assign in the Inspector for fade in/out effect
     private bool isHealthBarVisible = false;
     private Coroutine fadeCoroutine;
 
@@ -56,9 +57,11 @@ public class playerManager : MonoBehaviour
 
     void UpdateHealthUI()
     {
-        if (healthBar != null) // Check if the health bar slider is assigned
+        if (healthBar != null)
         {
             healthBar.value = (float)currentHealth / maxHealth;
+            // Update the fill color based on current health
+            healthFillImage.color = Color.Lerp(Color.red, Color.green, (float)currentHealth / maxHealth);
         }
     }
 

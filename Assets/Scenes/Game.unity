@@ -811,6 +811,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1664966248}
     - target: {fileID: 6800635257905130222, guid: 3380287d4e14e6d4b850a7bf91e7177f, type: 3}
+      propertyPath: healthFillImage
+      value: 
+      objectReference: {fileID: 765985007}
+    - target: {fileID: 6800635257905130222, guid: 3380287d4e14e6d4b850a7bf91e7177f, type: 3}
       propertyPath: healthBarCanvasGroup
       value: 
       objectReference: {fileID: 1664966247}
