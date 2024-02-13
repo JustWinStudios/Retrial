@@ -22,9 +22,11 @@ public class playerManager : MonoBehaviour
 
     // Game Over properties
     public GameObject gameOverPanel; // Assign a UI panel for the game over screen in the Inspector
+    public Canvas playerCanvas; // Assign the Player Canvas in the Inspector
 
     private bool isHealthBarVisible = false;
     private Coroutine fadeCoroutine;
+    private bool isGameOver = false; // Flag to check if the game is over
 
     void Start()
     {
@@ -34,6 +36,8 @@ public class playerManager : MonoBehaviour
 
     void Update()
     {
+        if (isGameOver) return; // Skip Update if the game is over
+
         HandleMovement();
         HandleShooting();
     }
@@ -93,8 +97,9 @@ public class playerManager : MonoBehaviour
     void LoseGame()
     {
         Debug.Log("Player defeated");
+        isGameOver = true; // Set the game over flag
         gameOverPanel.SetActive(true);
-        // Optionally, add more logic here for game over state, like pausing the game
+        playerCanvas.enabled = false; // Disable the Player Canvas
     }
 
     public void RespawnPlayer()
@@ -103,6 +108,8 @@ public class playerManager : MonoBehaviour
         UpdateHealthUI();
         healthBarCanvasGroup.alpha = 0;
         gameOverPanel.SetActive(false);
+        playerCanvas.enabled = true; // Re-enable the Player Canvas
+        isGameOver = false; // Reset the game over flag
         // Reset player position and other necessary states here
     }
 
