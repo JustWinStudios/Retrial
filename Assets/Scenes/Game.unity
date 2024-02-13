@@ -276,7 +276,7 @@ GameObject:
   - component: {fileID: 842304118}
   - component: {fileID: 842304117}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: gameCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -845,6 +845,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 243242375, guid: 3380287d4e14e6d4b850a7bf91e7177f, type: 3}
+      propertyPath: m_Name
+      value: playerCanvas
+      objectReference: {fileID: 0}
     - target: {fileID: 765985006, guid: 3380287d4e14e6d4b850a7bf91e7177f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
