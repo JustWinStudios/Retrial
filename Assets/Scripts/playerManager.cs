@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement; // For scene management
 
 public class playerManager : MonoBehaviour
 {
@@ -18,15 +19,17 @@ public class playerManager : MonoBehaviour
     public Slider healthBar; // Assign a UI Slider in the Inspector for the health bar
     public Image healthFillImage; // Assign the Fill Image of the health bar slider
     public CanvasGroup healthBarCanvasGroup; // Assign in the Inspector for fade in/out effect
+
+    // Game Over properties
+    public GameObject gameOverPanel; // Assign a UI panel for the game over screen in the Inspector
+
     private bool isHealthBarVisible = false;
     private Coroutine fadeCoroutine;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        currentHealth = maxHealth;
-        UpdateHealthUI();
-        healthBarCanvasGroup.alpha = 0; // Initially hide the health bar
+        RespawnPlayer();
     }
 
     void Update()
@@ -60,7 +63,6 @@ public class playerManager : MonoBehaviour
         if (healthBar != null)
         {
             healthBar.value = (float)currentHealth / maxHealth;
-            // Update the fill color based on current health
             healthFillImage.color = Color.Lerp(Color.red, Color.green, (float)currentHealth / maxHealth);
         }
     }
@@ -72,20 +74,41 @@ public class playerManager : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            // Player defeat logic here
-            Debug.Log("Player defeated");
+            LoseGame();
         }
-
-        // Show health bar when taking damage
-        if (!isHealthBarVisible)
+        else
         {
-            isHealthBarVisible = true;
-            if (fadeCoroutine != null)
+            if (!isHealthBarVisible)
             {
-                StopCoroutine(fadeCoroutine); // Stop the ongoing fade coroutine if any
+                isHealthBarVisible = true;
+                if (fadeCoroutine != null)
+                {
+                    StopCoroutine(fadeCoroutine);
+                }
+                fadeCoroutine = StartCoroutine(FadeHealthBar(1, 0.5f));
             }
-            fadeCoroutine = StartCoroutine(FadeHealthBar(1, 0.5f)); // Fade in quickly
         }
+    }
+
+    void LoseGame()
+    {
+        Debug.Log("Player defeated");
+        gameOverPanel.SetActive(true);
+        // Optionally, add more logic here for game over state, like pausing the game
+    }
+
+    public void RespawnPlayer()
+    {
+        currentHealth = maxHealth;
+        UpdateHealthUI();
+        healthBarCanvasGroup.alpha = 0;
+        gameOverPanel.SetActive(false);
+        // Reset player position and other necessary states here
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     IEnumerator FadeHealthBar(float targetAlpha, float duration)
@@ -100,13 +123,12 @@ public class playerManager : MonoBehaviour
             yield return null;
         }
 
-        healthBarCanvasGroup.alpha = targetAlpha; // Ensure the target alpha is set
+        healthBarCanvasGroup.alpha = targetAlpha;
 
         if (targetAlpha == 1)
         {
-            // Wait for a moment before starting to fade out
-            yield return new WaitForSeconds(2); // Adjust the wait time as needed
-            fadeCoroutine = StartCoroutine(FadeHealthBar(0, 1.5f)); // Fade out slowly
+            yield return new WaitForSeconds(2);
+            fadeCoroutine = StartCoroutine(FadeHealthBar(0, 1.5f));
         }
         else
         {

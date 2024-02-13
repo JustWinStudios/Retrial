@@ -196,7 +196,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_fontColor: {r: 0.20392159, g: 0.53333336, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -447,7 +447,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1163456751}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1475266464}
+        m_TargetAssemblyTypeName: playerManager, Assembly-CSharp
+        m_MethodName: RestartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1163456751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -503,7 +515,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1292177457
 RectTransform:
   m_ObjectHideFlags: 0
@@ -632,7 +644,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294903808
-  m_fontColor: {r: 0, g: 0.02998209, b: 1, a: 1}
+  m_fontColor: {r: 0.20392159, g: 0.53333336, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -747,6 +759,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1475266464 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6800635257905130222, guid: 3380287d4e14e6d4b850a7bf91e7177f, type: 3}
+  m_PrefabInstance: {fileID: 5676049093421306281}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9099359a34ffe574096d78155da73b8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1626274391
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,5 +901,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6800635257905130222, guid: 3380287d4e14e6d4b850a7bf91e7177f, type: 3}
+      propertyPath: gameOverPanel
+      value: 
+      objectReference: {fileID: 1292177456}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3380287d4e14e6d4b850a7bf91e7177f, type: 3}
