@@ -645,7 +645,7 @@ PlayerSettings:
   vrEditorSettings: {}
   cloudServicesEnabled:
     Build: 0
-    Collab: 0
+    Collab: 1
     Game Performance: 0
     Purchasing: 0
     UDP: 0
@@ -663,7 +663,7 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 0
-  cloudProjectId: d3cf0fb5-711b-4646-94a8-a397e3a3088b
+  cloudProjectId: 00f2fd9b-9d1c-41bb-ad1a-54f6f974836f
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: Retrial
