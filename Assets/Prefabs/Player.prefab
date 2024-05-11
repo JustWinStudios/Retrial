@@ -736,3 +736,5 @@ MonoBehaviour:
   healthBar: {fileID: 1664966248}
   healthFillImage: {fileID: 765985007}
   healthBarCanvasGroup: {fileID: 1664966247}
+  gameOverPanel: {fileID: 0}
+  playerCanvas: {fileID: 0}
