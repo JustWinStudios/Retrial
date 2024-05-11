@@ -113,11 +113,6 @@ public class playerManager : MonoBehaviour
         // Reset player position and other necessary states here
     }
 
-    public void RestartGame()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
     IEnumerator FadeHealthBar(float targetAlpha, float duration)
     {
         float startAlpha = healthBarCanvasGroup.alpha;
